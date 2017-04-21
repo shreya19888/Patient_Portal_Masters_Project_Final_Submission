@@ -1,8 +1,10 @@
 <h1>Vitals</h1>
 <div>
+  <% if current_user.practices.count == 0%>
   <a href = "<%= new_custom_vital_path %>" class = "btn btn-primary" role = "button">
       Record New Vital Type
     </a>
+  <% end %>
 </div>
 <hr>
 

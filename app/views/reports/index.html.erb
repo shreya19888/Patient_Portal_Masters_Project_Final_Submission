@@ -18,7 +18,7 @@
       <tr>
         <td><%= report.name %></td>
         <td><%= link_to "Download Report", report.attachment_url %></td>
-        <td><%= button_to "Delete",  report, method: :delete, class: "btn btn-danger", confirm: "Are you sure that you wish to delete #{report.name}?" %></td>
+        <td><%= button_to "Delete",  report, method: :delete, class: "btn btn-danger", data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>

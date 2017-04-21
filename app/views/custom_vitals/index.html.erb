@@ -1,4 +1,9 @@
-<p id="notice"><%= notice %></p>
+<% if !flash[:notice].blank? %>
+  <div class="alert alert-info">
+  <%= flash[:notice] %>
+  </div>
+<% end %>
+<br />
 
 <h1>Listing Custom Vitals</h1>
 
