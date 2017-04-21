@@ -1,0 +1,30 @@
+<%= form_for(@custom_vital) do |f| %>
+  <% if @custom_vital.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@custom_vital.errors.count, "error") %> prohibited this custom_vital from being saved:</h2>
+
+      <ul>
+      <% @custom_vital.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :date,class: 'form-control-label' %><br>
+    <%= f.date_select :date,class: 'form-control' %>
+  </div>
+  <div class="field">
+    <%= f.label :name,class: 'form-control-label' %><br>
+    <%= f.text_field :name,class: 'form-control' %>
+  </div>
+  <div class="field">
+    <%= f.label :value,class: 'form-control-label' %><br>
+    <%= f.number_field :value,class: 'form-control' %>
+  </div>
+  <%= f.hidden_field :user_id,:value=>current_user.id %>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

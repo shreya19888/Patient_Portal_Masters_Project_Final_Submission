@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Custom Vitals</h1>
+
+<table class ="table table-striped">
+  <thead class ="thead thead-default">
+    <tr>
+      <th>Name</th>
+      <th>Value</th>
+      <th>Date</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @custom_vitals.each do |custom_vital| %>
+      <tr>
+        <td><%= custom_vital.name %></td>
+        <td><%= custom_vital.value %></td>
+        <td><%= custom_vital.date.strftime("%d/%m/%Y") %></td>
+        <td><%= link_to 'Show', custom_vital,class: 'btn btn-mini' %></td>
+        <td><%= link_to 'Edit', edit_custom_vital_path(custom_vital),class: 'btn btn-mini btn-success' %></td>
+        <td><%= link_to 'Destroy', custom_vital, method: :delete,class: 'btn btn-mini btn-danger', data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Custom vital', new_custom_vital_path,class: "btn btn-secondary" %>

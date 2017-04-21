@@ -1,0 +1,59 @@
+<div class="row">
+	<div class="col-md-3">
+		<ul class="sidebar-list">
+			<% if current_user.practices.count == 1%>
+			<li class="sidebar-item"><%= link_to "Your Practices", practices_path, class: "sidebar-link" %></li>
+			<li class="sidebar-item"><%= link_to "Your Patients", your_appointments_path, class: "sidebar-link" %></li>
+			<% end %>
+			<% if current_user.practices == 0%>
+				<li class="sidebar-item"><%= link_to "Past Doctor's appointments", your_trips_path, class: "sidebar-link" %></li>
+			<% end %>
+		</ul>
+	</div>
+	<div class="col-md-9">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				Your Patients
+			</div>
+			<div class="panel-body">
+				<% @practices.each do |practice| %>
+					
+					<% practice.appointments.each do |appointment| %>
+						<% if appointment.status %>
+							<div class="row">
+								<div class="col-md-2">
+									<%= appointment.date.strftime('%v') %>
+									<%= appointment.time.strftime('%H:%M %p')%>
+								</div>	
+								<div class="col-md-2">
+									<%= link_to user_path(appointment.user) do %>
+										<%= image_tag avatar_url(appointment.user), class: "img-circle avatar-medium" %>
+									<% end %>	
+								</div>	
+								<div class="col-md-2 right">
+									<h4>$<%= appointment.price %></h4>
+								</div>
+								<div class="col-md-2 right">
+									<h4>$<%= appointment.reason %></h4>
+								</div>	
+								<div class="col-md-2">
+									<%= link_to vital_path(appointment.user) do %>
+										<i class="fa fa-line-chart" aria-hidden="true"></i> Vitals
+									<% end %>	
+								</div>
+								<div class="col-md-2">
+									<%= link_to reports_path(appointment.user) do %>
+										<i class="fa fa-file" aria-hidden="true"></i> Reports
+									<% end %>	
+								</div>
+							</div>
+							<hr>
+						<% end %>
+					<% end %>
+
+				<% end %>
+
+			</div>
+		</div>
+	</div>
+</div>

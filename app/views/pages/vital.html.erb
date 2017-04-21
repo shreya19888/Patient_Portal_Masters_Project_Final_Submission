@@ -1,0 +1,129 @@
+<h1>Vitals</h1>
+<div>
+  <a href = "<%= new_custom_vital_path %>" class = "btn btn-primary" role = "button">
+      Record New Vital Type
+    </a>
+</div>
+<hr>
+
+<div class = "row">
+<%= javascript_include_tag "//www.google.com/jsapi", "chartkick" %>
+   <div class = "col-sm-6 col-md-3">
+      <div class = "thumbnail">
+         <%= line_chart Heartbeat.where(:user_id => @user.id).group("date(heartbeats.date)").average(:count),xtitle: "Date", ytitle: "Beats per Minute"%>
+         
+      </div>
+
+      <div class = "caption">
+         <h3>Heartbeats</h3>
+         <% if current_user == @user %>
+           <p>
+              <a href = "<%= heartbeats_path %>" class = "btn btn-primary" role = "button">
+                 Record Heartbeat
+              </a>
+           </p>
+         <% end %>
+      </div>
+   </div>
+
+   <div class = "col-sm-6 col-md-3">
+      <div class = "thumbnail">
+         <%= line_chart Temperature.where(:user_id => @user.id).group("date(temperatures.date)").average(:temperature),xtitle: "Date", ytitle: "Temperature"%>
+      </div>
+
+      <div class = "caption">
+         <h3>Temperatures</h3>
+         <% if current_user == @user %>
+           <p>
+              <a href = "<%= temperatures_path %>" class = "btn btn-primary" role = "button">
+                 Record Temperature
+              </a>
+           </p>
+         <% end %>
+
+      </div>
+   </div>
+
+   <div class = "col-sm-6 col-md-3">
+      <div class = "thumbnail">
+         <%= line_chart Weight.where(:user_id => @user.id).group("date(weights.date)").average(:weight),xtitle: "Date", ytitle: "Weight"%>
+      </div>
+
+      <div class = "caption">
+         <h3>Weights</h3>
+         <% if current_user == @user %>
+           <p>
+              <a href = "<%= weights_path %>" class = "btn btn-primary" role = "button">
+                 Record Weight
+              </a>
+           </p>
+         <% end %>
+
+      </div>
+   </div>
+
+   <div class = "col-sm-6 col-md-3">
+      <div class = "thumbnail">
+        <%= line_chart [
+  {name: "Systolic", data: Bloodpressure.where(:user_id => @user.id).group("date(bloodpressures.date)").average(:systolic)},
+  {name: "Dystolic", data: Bloodpressure.where(:user_id => @user.id).group("date(bloodpressures.date)").average(:dystolic)}
+  ] %>
+      </div>
+
+      <div class = "caption">
+         <h3>Blood-Pressure</h3>
+         <% if current_user == @user %>
+         <p>
+            <a href = "<%= bloodpressures_path %>" class = "btn btn-primary" role = "button">
+               Record Blood-Pressure
+            </a>
+         </p>
+         <% end %>
+
+      </div>
+  </div>
+  <div class = "col-sm-6 col-md-3">
+      <div class = "thumbnail">
+        <%= line_chart [
+          {name: "Fasting", data: Bloodsugar.where(:user_id => @user.id).group("date(bloodsugars.date)").average(:fasting)},
+          {name: "Non-Fasting", data: Bloodsugar.where(:user_id => @user.id).group("date(bloodsugars.date)").average(:nonfasting)}
+        ] %>
+      </div>
+
+      <div class = "caption">
+         <h3>Blood-Sugar</h3>
+         <% if current_user == @user %>
+         <p>
+            <a href = "<%= bloodsugars_path %>" class = "btn btn-primary" role = "button">
+               Record Blood-Sugar
+            </a>
+         </p>
+         <% end %>
+      </div>
+  </div>
+
+  <% custom_vitals = CustomVital.where(:user_id=>@user.id).pluck(:name).uniq %>
+  <% if !custom_vitals.empty? %>
+    <% custom_vitals.each do |custom_vital| %>
+      <div class = "col-sm-6 col-md-3">
+        <div class = "thumbnail">
+          <%= line_chart CustomVital.where(:user_id => @user.id,:name=>custom_vital).group("date(custom_vitals.date)").average(:value),xtitle: "Date", ytitle: "CustomVital" %>
+        </div>
+
+        <div class = "caption">
+          <h3><%= custom_vital.camelcase %></h3>
+          <% if current_user == @user %>
+           <p>
+              <a href = "<%= custom_vitals_path %>" class = "btn btn-primary" role = "button">
+                <%= custom_vital.camelcase %>
+              </a>
+           </p>
+         <% end %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+</div>
+<br>
+

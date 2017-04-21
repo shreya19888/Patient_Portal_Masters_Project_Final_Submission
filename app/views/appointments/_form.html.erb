@@ -1,0 +1,80 @@
+<%= form_for([@practice, @practice.appointments.new]) do |f| %>
+
+	<div class="row">
+		<div class="col-md-6">
+			<label>Date of Appointment</label>
+			<%= f.text_field :date, readonly: 'true', placeholder: 'Date' , class: 'form-control' %>			
+		</div>
+		<div class="col-md-6">
+			<label>Time of the Appointment</label>
+			<%= f.text_field :time, placeholder: 'Time' , class: 'form-control' %>		
+		</div>
+		
+		<div class="col-md-6">
+			<label>Reason for your appointment</label>
+			<%= f.text_area :reason, placeholder: 'Briefly explain the reason for your visit' , class: 'form-control' %>		
+		</div>
+	</div>
+
+	<%= f.hidden_field :practice_id, value: @practice.id %>
+	<%= f.hidden_field :price, value: @practice.price %>
+
+	
+	<div id="preview" style="display: none">
+		<h4><span id="message"></span></h4>
+
+		<table class="reservation-table" >
+			<tbody>
+				<tr>
+					<td>Insurance Coverage</td>
+					<td><span id="appointment_coverage"></span></td>
+				</tr>
+				<tr>
+					<td>Tax(s)</td>
+					<td><span id="appointment_tax"></span></td>
+				</tr>
+				<tr>
+					<td>Total</td>
+					<td><span id="appointment_total"></span></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<br>
+	<%= f.submit "Book Your Appointment", class: "btn btn-primary" %>
+	
+<% end %>
+
+
+<script type="text/javascript">
+	$(function() {
+		$('#appointment_date').datepicker({
+			minDate: 0,
+			maxDate: '6m',
+			dateFormat: 'dd-mm-yy'
+		});
+		
+        $('#appointment_time').timepicker({
+        	'minTime': '8:00am',
+        	'maxTime': '4:30pm'});
+		
+		$("#appointment_date, #appointment_time").on("change", function(){
+			var time = $("#appointment_time").val();
+			var date = $("#appointment_date").val();
+			var practice_id = <%=params[:id]%>
+			$.ajax({
+				url: "/check_date_time",
+				data: "date="+date+"&time="+time+"&practice_id="+practice_id,
+				success: function(res){
+					if(res.status == false){
+						alert("Sorry this time has been booked by some other patient,please select a different time")
+						$("#appointment_time").val("");
+						$("#appointment_date").val("");
+					}
+				}
+			})
+		})	
+	});
+		
+</script>

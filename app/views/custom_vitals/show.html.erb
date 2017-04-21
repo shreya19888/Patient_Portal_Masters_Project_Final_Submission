@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @custom_vital.name %>
+</p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @custom_vital.value %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @custom_vital.user_id %>
+</p>
+
+<%= link_to 'Edit', edit_custom_vital_path(@custom_vital) %> |
+<%= link_to 'Back', custom_vitals_path %>
